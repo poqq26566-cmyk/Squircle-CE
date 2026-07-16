@@ -17,7 +17,13 @@
 package com.blacksquircle.ui.filesystem.base.utils
 
 fun String.isValidFileName(): Boolean {
-    return isNotBlank() && !contains("/") && !equals(".") && !equals("..")
+    if (isBlank()) return false
+    if (startsWith("/") || endsWith("/")) return false
+    if (contains("//")) return false
+    val segments = split("/")
+    return segments.all { segment ->
+        segment.isNotBlank() && segment != "." && segment != ".."
+    }
 }
 
 fun String.endsWith(suffixes: Array<String>, ignoreCase: Boolean = true): Boolean {
